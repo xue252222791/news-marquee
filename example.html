@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻走马灯效果</title>
+	<style>
+		.content{height: 40px; overflow: hidden;}
+		.content ul{position: relative;}
+	</style>
+	<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+	<div class="content">
+		<ul>
+
+
+		<li>华景假期整体玩“失踪” 数千人不知所措..</li>
+		<li>意大利大桥崩塌29死 加拿大游客惊险生还</li>
+		<li>皇后码头观光巴士与警车相撞 七人受伤</li>
+		<li>加拿大男子喜中700万大奖 却为是否领奖纠结</li>
+		<li>为难民争光！叙利亚难民小伙勇救孩童</li>
+		<li>屡曝学生自杀 滑铁卢大学推出PASS神奇小箱！</li>
+	</ul>
+	</div>
+	<script>
+		function scrollShow(dom) {
+			this.dom = dom;
+			this.scrollH = this.dom.find('li').outerHeight();
+			this.inter = null;
+			this.interTime = 3000;
+			this.init();
+			this.bindEve();
+		}
+
+		scrollShow.prototype = {
+			constructor: scrollShow,
+			init: function () {
+				var _this = this;
+				this.inter = setInterval(function () {
+					_this.scroll();
+				}, 3000);
+			},
+			scroll: function () {
+				var _this = this;
+				this.dom.animate({ 'margin-top': -_this.scrollH * 2 + 'px' }, 400, function () {
+					var removeDom = _this.dom.find('li:lt(2)').remove();
+					_this.dom.append(removeDom);
+					_this.dom.css('margin-top', '0px');
+				})
+			},
+			bindEve: function () {
+				var _this = this;
+				this.dom.hover(function () {
+					clearInterval(_this.inter)
+				}, function () {
+					_this.inter = setInterval(function () {
+						_this.scroll();
+					}, 3000);
+				})
+			}
+		}
+
+		new scrollShow($('.content ul'));
+	</script>
+</body>
+</html>
